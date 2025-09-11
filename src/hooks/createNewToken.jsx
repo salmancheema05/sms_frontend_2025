@@ -5,11 +5,15 @@ import { useDispatch } from "react-redux";
 const useCreateToken = () => {
   const [createNewTokenapi] = useCreateNewTokenapiMutation();
   const dispatch = useDispatch();
-  const createNewToken = async (refreshToken) => {
+  const createNewToken = async ({ refreshToken, token }) => {
     try {
-      const result = await createNewTokenapi(refreshToken).unwrap();
+      const result = await createNewTokenapi({
+        refreshToken: refreshToken,
+        token: token,
+      });
 
-      const decoded = jwtDecode(result.message);
+      const decoded = jwtDecode(result.data.message);
+
       const userData = {
         school_id: decoded.school_id,
         role_id: decoded.role_id,
@@ -19,11 +23,11 @@ const useCreateToken = () => {
         first_name: decoded.first_name,
         last_name: decoded.last_name,
         role_name: decoded.role_name,
-        token: result.message,
-        refreshToken: result.refreshToken,
+        token: result.data.message,
+        refreshToken: result.data.refreshToken,
       };
       dispatch(setUserInformation(userData));
-      return result; // Return the result for use in other functions
+      return result;
     } catch (err) {
       console.error("Error in createNewToken:", err);
       throw err; // Rethrow to handle errors in the caller

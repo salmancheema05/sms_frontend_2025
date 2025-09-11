@@ -55,6 +55,7 @@ const CreateClass = () => {
         if (res.data.error) {
           await createNewToken({
             refreshToken: refreshToken,
+            token: token,
           });
         } else {
           const res = await getAllClassesapi({ token: token });
@@ -72,6 +73,7 @@ const CreateClass = () => {
         if (res.data.error) {
           await createNewToken({
             refreshToken: refreshToken,
+            token: token,
           });
         } else {
           const res = await getAllClassGroupapi({ token: token });

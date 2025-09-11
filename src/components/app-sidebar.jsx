@@ -47,16 +47,18 @@ export function AppSidebar({ ...props }) {
   const { userAuthSliceUpdated } = useAuth();
   const logout = async () => {
     try {
-      const data = { token: token, refreshToken: refreshToken };
-      const res = await userLoginoutapi(data).unwrap();
-      if (res.error) {
-        const result = await createNewToken({
-          refreshToken: data.refreshToken,
+      const payload = { token, refreshToken };
+      const response = await userLoginoutapi(payload).unwrap();
+      if (response.error) {
+        const newTokenData = await createNewToken({
+          refreshToken: refreshToken,
+          token: token,
         });
-        await userLoginoutapi({
-          token: result.message,
-          refreshToken: result.refreshToken,
-        }).unwrap();
+        const retryPayload = {
+          token: newTokenData.data.message,
+          refreshToken: newTokenData.data.refreshToken,
+        };
+        const res = await userLoginoutapi(retryPayload).unwrap();
         userAuthSliceUpdated();
       } else {
         userAuthSliceUpdated();
@@ -68,6 +70,7 @@ export function AppSidebar({ ...props }) {
       }
     }
   };
+
   const data = {
     user: {
       name: `${first_name} ${last_name}`,

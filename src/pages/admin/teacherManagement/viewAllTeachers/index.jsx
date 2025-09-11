@@ -46,6 +46,7 @@ const ViewAllTeachers = () => {
         if (res.data.error) {
           await createNewToken({
             refreshToken: refreshToken,
+            token: token,
           });
         } else {
           setAllTeaches(res.data.result);

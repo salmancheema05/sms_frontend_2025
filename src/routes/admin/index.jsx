@@ -75,6 +75,7 @@ const Routers = () => {
         if (res.data.error) {
           const result = await createNewToken({
             refreshToken: refreshToken,
+            token: token,
           });
           newToken = result.message;
         } else {
@@ -93,6 +94,7 @@ const Routers = () => {
       if (res.data.error) {
         const result = await createNewToken({
           refreshToken: refreshToken,
+          token: token,
         });
         newToken = result.message;
       } else {
@@ -110,6 +112,7 @@ const Routers = () => {
       if (res.data.error) {
         const result = await createNewToken({
           refreshToken: refreshToken,
+          token: token,
         });
         newToken = result.message;
       } else {

@@ -48,6 +48,7 @@ const TeacherDetail = () => {
       if (res.data.error) {
         await createNewToken({
           refreshToken: refreshToken,
+          token: token,
         });
       } else {
         setTeacherData(res.data.result);
@@ -64,8 +65,9 @@ const TeacherDetail = () => {
         foldername: "teachers",
         token: token,
       });
-      const objectUrl = URL.createObjectURL(res.data);
-      setDisplayImage(objectUrl);
+      console.log(res);
+      //   const objectUrl = URL.createObjectURL(res.data);
+      //   setDisplayImage(objectUrl);
     } catch (err) {
       console.log(err);
     }

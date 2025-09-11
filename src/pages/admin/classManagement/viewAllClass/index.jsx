@@ -1,5 +1,6 @@
 import ViewClassDetailModal from "@/components/custom/admin/defaultModel";
 import Table from "@/components/custom/table/table";
+import useCreateToken from "@/hooks/createNewToken";
 import useDropdownToggle from "@/hooks/dropdown";
 import { useFetchAllInstituteClassapiMutation } from "@/services/createclassapi";
 import React, { useEffect, useState } from "react";
@@ -32,6 +33,7 @@ const ViewAllClasss = () => {
   const [classes, setClasses] = useState([]);
   const [classData, setClassData] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+  const { createNewToken } = useCreateToken();
   const getAllClasses = async () => {
     try {
       if (token) {
@@ -42,6 +44,7 @@ const ViewAllClasss = () => {
         if (res.data.error) {
           await createNewToken({
             refreshToken: refreshToken,
+            token: token,
           });
         } else {
           setClasses(res.data.result);

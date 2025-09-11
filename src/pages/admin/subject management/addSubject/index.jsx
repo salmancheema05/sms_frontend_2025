@@ -44,8 +44,10 @@ const AddSubject = () => {
       if (token) {
         const res = await getAllClassesapi({ token: token });
         if (res.data.error) {
+          console.log("create new function");
           await createNewToken({
             refreshToken: refreshToken,
+            token: token,
           });
         } else {
           const res = await getAllClassesapi({ token: token });
@@ -65,6 +67,7 @@ const AddSubject = () => {
   const onSubmit = async (data) => {
     try {
       if (token) {
+        console.log("submit button clicked");
         const class_name = data.class_id;
         const removeGrade = class_name.replace("grade", "").trim();
         let subjectArray = data.subjects.map((item) => ({
@@ -81,6 +84,7 @@ const AddSubject = () => {
             token: result.message,
             object: object,
           });
+          console.log("new token", token);
           allfieldRest(response);
         } else {
           allfieldRest(res);

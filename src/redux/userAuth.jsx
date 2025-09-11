@@ -13,7 +13,7 @@ const initialState = {
   refreshToken: "",
 };
 const userAuth = createSlice({
-  name: "userAuth2",
+  name: "userAuth",
   initialState,
   reducers: {
     setUserInformation(state, action) {
