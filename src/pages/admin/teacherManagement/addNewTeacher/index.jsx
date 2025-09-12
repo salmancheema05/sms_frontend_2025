@@ -98,11 +98,13 @@ const AddNewTeacher = () => {
         console.log("new token");
         const res = await createNewToken({
           refreshToken: refreshToken,
+          token: token,
         });
         const result = await addTeacherapi({
-          token: res.message,
+          token: res.data.message,
           formdata: formData,
         });
+        alert(result.data.message);
         reset({
           teacher_salary: "",
           job_type: "",

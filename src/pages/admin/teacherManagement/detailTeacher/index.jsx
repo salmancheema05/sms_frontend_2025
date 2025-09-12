@@ -38,13 +38,12 @@ const TeacherDetail = () => {
   const [teacherData, setTeacherData] = useState(null);
   const [displayImage, setDisplayImage] = useState(null);
   const getTeacher = async () => {
-    if (token && teacher_id) {
+    if (token) {
       const res = await getTeacherapi({
         token: token,
         school_id: school_id,
         school_teacher_id: teacher_id,
       });
-
       if (res.data.error) {
         await createNewToken({
           refreshToken: refreshToken,
@@ -65,9 +64,8 @@ const TeacherDetail = () => {
         foldername: "teachers",
         token: token,
       });
-      console.log(res);
-      //   const objectUrl = URL.createObjectURL(res.data);
-      //   setDisplayImage(objectUrl);
+      const objectUrl = URL.createObjectURL(res.data);
+      setDisplayImage(objectUrl);
     } catch (err) {
       console.log(err);
     }
