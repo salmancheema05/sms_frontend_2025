@@ -26,10 +26,10 @@ const TeacherInformation = ({
     (state) => state.persisted?.bloodGroupList.list
   );
   return (
-    <div className="mt-3">
+    <div className="mt-3 ">
       <ContentWithTitle title="Add New Teacher">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-1">
+        <div className="grid grid-cols-12  gap-4 ">
+          <div className="col-span-12 md:col-span-6 lg:col-span-4">
             <Controller
               name="teacher_name"
               control={control}
@@ -46,7 +46,7 @@ const TeacherInformation = ({
               <ErrorShow error={errors.teacher_name.message} />
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12  md:col-span-6 lg:col-span-4">
             <Controller
               name="spouse"
               control={control}
@@ -61,7 +61,7 @@ const TeacherInformation = ({
             />
             {errors.spouse && <ErrorShow error={errors.spouse.message} />}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12  md:col-span-6 lg:col-span-4">
             <Controller
               name="marital_status"
               control={control}
@@ -78,7 +78,7 @@ const TeacherInformation = ({
               <ErrorShow error={errors.marital_status.message} />
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12 md:col-span-6 lg:col-span-4">
             <Controller
               name="nic_number"
               control={control}
@@ -95,7 +95,7 @@ const TeacherInformation = ({
               <ErrorShow error={errors.nic_number.message} />
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12 md:col-span-6 lg:col-span-4">
             <Controller
               name="contact_number"
               control={control}
@@ -112,7 +112,7 @@ const TeacherInformation = ({
               <ErrorShow error={errors.contact_number.message} />
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12 md:col-span-6 lg:col-span-4">
             <Controller
               name="choose_gender"
               control={control}
@@ -129,7 +129,7 @@ const TeacherInformation = ({
               <ErrorShow error={errors.choose_gender.message} />
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12 md:col-span-6 lg:col-span-4">
             <Controller
               name="choose_blood_group"
               control={control}
@@ -146,7 +146,7 @@ const TeacherInformation = ({
               <ErrorShow error={errors.choose_blood_group.message} />
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12 md:col-span-6 lg:col-span-4">
             <Controller
               name="email"
               control={control}
@@ -161,7 +161,7 @@ const TeacherInformation = ({
             />
             {errors.email && <ErrorShow error={errors.email.message} />}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12 md:col-span-12 lg:col-span-4">
             <Controller
               name="current_adress"
               control={control}
@@ -178,7 +178,7 @@ const TeacherInformation = ({
               <ErrorShow error={errors.current_adresss.message} />
             )}
           </div>
-          <div className="col-span-3">
+          <div className="col-span-12">
             <UploadAndPreview
               label="Upload Teacher Picture"
               Controller={Controller}
@@ -188,7 +188,7 @@ const TeacherInformation = ({
               preview={preview}
             />
           </div>
-          <div className="col-span-3 ">
+          <div className="col-span-12">
             <Controller
               name="qualification"
               control={control}

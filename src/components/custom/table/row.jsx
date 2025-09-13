@@ -23,7 +23,7 @@ const Row = ({
       <td className="px-6 py-4 text-center relative">
         <div className="flex justify-center">
           <GripHorizontal
-            className="cursor-pointer text-gray-500 hover:text-blue-600"
+            className="cursor-pointer text-gray-500 dark:hover:bg-accent "
             onClick={() => openDropdown(rowIndex)}
           />
         </div>

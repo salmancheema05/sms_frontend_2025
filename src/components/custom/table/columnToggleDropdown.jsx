@@ -15,7 +15,7 @@ const ColumnToggleDropdown = ({
       <div>
         {columntoggleButtonShow === true ? (
           <button
-            className="p-2 bg-chart-3  text-white rounded"
+            className="p-2 dark:bg-[#111826]  text-white rounded"
             onClick={() => openDropdown("column-toggle")}
           >
             Filter Columns
@@ -23,14 +23,14 @@ const ColumnToggleDropdown = ({
         ) : null}
 
         {dropdownShow === "column-toggle" && (
-          <div className="absolute mt-2 bg-white border shadow-lg rounded w-48 z-50">
+          <div className="absolute mt-2 bg-white dark:bg-[#111826] border shadow-lg rounded w-48 z-50">
             <ul className="divide-y">
               {columns.map((col, index) => (
                 <li key={index} className="flex items-center px-4 py-2 gap-2">
                   <input
                     type="checkbox"
                     checked={col.status === "show"}
-                    className="accent-chart-3"
+                    className="bg-[#111826]"
                     onChange={() =>
                       setColumns((prev) =>
                         prev.map((item, i) =>

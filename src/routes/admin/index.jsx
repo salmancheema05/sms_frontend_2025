@@ -143,6 +143,31 @@ const Routers = () => {
   useEffect(() => {
     checkLoctation();
   }, [location]);
+  useEffect(() => {
+    const root = document.documentElement; // <html> element
+
+    function applyDarkMode() {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+    }
+
+    applyDarkMode();
+
+    // Listen for system theme changes
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", applyDarkMode);
+
+    // Cleanup listener on unmount
+    return () => {
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .removeEventListener("change", applyDarkMode);
+    };
+  }, []);
   return (
     <Routes>
       <Route element={<AdminISNotAuthenticated />}>

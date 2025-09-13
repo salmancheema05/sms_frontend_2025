@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 export const AuthCard = ({ title, children, className }) => {
   return (
-    <Card className={className}>
+    <Card className={`dark:bg-primary-bg ${className}`}>
       <CardHeader className="text-center">
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>

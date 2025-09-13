@@ -43,42 +43,40 @@ const Table = ({
         setColumns={setColumns}
         columntoggleButtonShow={columntoggleButtonShow}
       />
-      <div className="w-full rounded-xl border border-gray-200 shadow">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-chart-3 text-white">
-              {columns
-                .filter((col) => col.status === "show")
-                .map((col, index) => (
-                  <th
-                    key={index}
-                    className="px-6 py-4 text-left font-semibold capitalize"
-                  >
-                    {col.columnNameforUser}
-                  </th>
-                ))}
-              <th className="px-6 py-4 text-left font-semibold">Actions</th>
-            </tr>
-            <FiltersRow
+      <table className="w-full table-auto border-1 border-white">
+        <thead className="dark:bg-[#111826]  text-white">
+          <tr>
+            {columns
+              .filter((col) => col.status === "show")
+              .map((col, index) => (
+                <th
+                  key={index}
+                  className="px-6 py-4 text-left font-semibold capitalize"
+                >
+                  {col.columnNameforUser}
+                </th>
+              ))}
+            <th className="px-6 py-4 text-left font-semibold">Actions</th>
+          </tr>
+          <FiltersRow
+            columns={columns}
+            handleFilterChange={handleFilterChange}
+          />
+        </thead>
+        <tbody>
+          {filteredStudents.map((item, index) => (
+            <Row
+              key={index}
+              rowIndex={index + 1}
+              data={item}
               columns={columns}
-              handleFilterChange={handleFilterChange}
+              dropdownShow={dropdownShow}
+              openDropdown={openDropdown}
+              actions={actions}
             />
-          </thead>
-          <tbody>
-            {filteredStudents.map((item, index) => (
-              <Row
-                key={index}
-                rowIndex={index + 1}
-                data={item}
-                columns={columns}
-                dropdownShow={dropdownShow}
-                openDropdown={openDropdown}
-                actions={actions}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 };
