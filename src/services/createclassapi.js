@@ -25,9 +25,19 @@ export const createClassApi = createApi({
         },
       }),
     }),
+    getAllSubjectOfClassapi: builder.mutation({
+      query: ({ token, className, school_id }) => ({
+        url: `findallsubjectofclass?subject_name=${className}&school_id=${school_id}`,
+        method: "GET",
+        headers: {
+          authorizated: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 export const {
   useCreateClassapiMutation,
   useFetchAllInstituteClassapiMutation,
+  useGetAllSubjectOfClassapiMutation,
 } = createClassApi;

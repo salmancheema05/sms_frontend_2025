@@ -1,5 +1,6 @@
 import { setBloodGroup } from "@/redux/bloodListSlice";
 import { setGender } from "@/redux/genderSlice";
+import { setLevel } from "@/redux/level";
 import { setMaritalStatus } from "@/redux/maritalStatus";
 import { setSession } from "@/redux/sessionSlice";
 import { setUserInformation } from "@/redux/userAuth";
@@ -26,6 +27,7 @@ const useAuth = () => {
       dispatch(setSession([]));
       dispatch(setBloodGroup([]));
       dispatch(setMaritalStatus([]));
+      dispatch(setLevel([]));
     } catch (err) {
       console.error("user Auth updated hook ", err);
     }

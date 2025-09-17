@@ -15,18 +15,17 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import ErrorShow from "@/components/custom/errorShow";
 import DynamicTwoFields from "@/components/custom/dynamicInput";
-import { useCreateClassapiMutation } from "@/services/createclassapi";
+import { Link } from "react-router-dom";
+import {
+  useCreateClassapiMutation,
+  useGetAllSubjectOfClassapiMutation,
+} from "@/services/createclassapi";
 
 const schema = yup.object().shape({
   class_id: yup.string().required("Class is required"),
   session_id: yup.string().required("Session is required"),
   group_id: yup.string().required("Group is required"),
-  subjects: yup.array().of(
-    yup.object().shape({
-      subject: yup.string().required("Subject name is required"),
-      board: yup.string().required("Writer name/Board name is required"),
-    })
-  ),
+  level: yup.string().required("level is required"),
 });
 
 const CreateClass = () => {
@@ -34,6 +33,7 @@ const CreateClass = () => {
   const { token, refreshToken, school_id, user_id } = useSelector(
     (state) => state.persisted?.user_auth
   );
+  const levelList = useSelector((state) => state.persisted?.levelList.list);
   const {
     handleSubmit,
     control,
@@ -42,12 +42,15 @@ const CreateClass = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const [disabled, setDisbled] = useState(false);
   const [classes, setClasses] = useState([]);
   const [classGroup, setClassGroup] = useState([]);
+  const [subject, setsubject] = useState(null);
   const { createNewToken } = useCreateToken();
   const [getAllClassesapi] = useGetAllClassesapiMutation();
   const [getAllClassGroupapi] = useGetAllClassGroupapiMutation();
   const [createClassapi] = useCreateClassapiMutation();
+  const [getAllSubjectOfClassapi] = useGetAllSubjectOfClassapiMutation();
   const getAllClasses = async () => {
     try {
       if (token) {
@@ -86,23 +89,35 @@ const CreateClass = () => {
   };
   const onSubmit = async (data) => {
     try {
-      let obj = {
-        ...data,
-        school_id,
-        creator_id: user_id,
-        token: token,
-      };
-      const res = await createClassapi(obj);
-
-      if (res.data.error) {
-        const res = await createNewToken({
-          refreshToken: refreshToken,
-        });
-        obj.token = res.message;
-        const result = await createClassapi(obj);
-        allfieldRest(result);
+      const subjectIds = subject.map((subject) => subject.subject_id);
+      if (subject.length == 0) {
+        alert("first create subject for class");
       } else {
-        allfieldRest(res);
+        let obj = {
+          ...data,
+          school_id,
+          creator_id: user_id,
+          token: token,
+          subjects: subjectIds,
+        };
+        setDisbled(true);
+        const res = await createClassapi(obj);
+
+        if (res.data.error) {
+          const res = await createNewToken({
+            refreshToken: refreshToken,
+            token: token,
+          });
+          obj.token = res.data.message;
+          const result = await createClassapi(obj);
+          allfieldRest(result);
+          setsubject(null);
+          setDisbled(false);
+        } else {
+          allfieldRest(res);
+          setsubject(null);
+          setDisbled(false);
+        }
       }
     } catch (err) {
       console.log(err);
@@ -115,8 +130,33 @@ const CreateClass = () => {
         class_id: "",
         session_id: "",
         group_id: "",
-        subjects: [{ subject: "", board: "" }], // reset dynamic fields
       });
+    }
+  };
+  const handleClassSelection = async (data) => {
+    if (token) {
+      const classID = data;
+      const findClass = classes.find((item) => item.school_class_id == classID);
+      const className = findClass.school_class_name;
+      const getClassNo = className.replace("grade", "");
+      const object = {
+        className: getClassNo,
+        school_id: school_id,
+        token: token,
+      };
+      const res = await getAllSubjectOfClassapi(object);
+      if (res.data.error) {
+        const response = await createNewToken({
+          refreshToken: refreshToken,
+          token: token,
+        });
+        object.token = response.data.message;
+        const result = await getAllSubjectOfClassapi(object);
+        console.log(result.data.result);
+        setsubject(result.data.result);
+      } else {
+        setsubject(res.data.result);
+      }
     }
   };
   useEffect(() => {
@@ -126,8 +166,8 @@ const CreateClass = () => {
   return (
     <ContentWithTitle title="Create Class">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 gap-4">
-          <div className="col-span-1">
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-12">
             <Controller
               name="class_id"
               control={control}
@@ -136,13 +176,16 @@ const CreateClass = () => {
                   label="Choose Class"
                   options={classes}
                   value={field.value}
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value); // Update form value
+                    handleClassSelection(value); // Make API call
+                  }}
                 />
               )}
             />
             {errors.class_id && <ErrorShow error={errors.class_id.message} />}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12">
             <Controller
               name="session_id"
               control={control}
@@ -159,7 +202,7 @@ const CreateClass = () => {
               <ErrorShow error={errors.session_id.message} />
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12">
             <Controller
               name="group_id"
               control={control}
@@ -174,27 +217,47 @@ const CreateClass = () => {
             />
             {errors.group_id && <ErrorShow error={errors.group_id.message} />}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-12">
             <Controller
-              name="subjects"
+              name="level"
               control={control}
               render={({ field }) => (
-                <DynamicTwoFields
-                  title="Subject"
-                  field1Label="Subject Name"
-                  field1Name="subject"
-                  field2Name="board"
-                  field1Placeholder="Enter Subject Name"
-                  field2Label="Writer Name / Board Name"
-                  field2Placeholder="Enter Writer Name / Board"
+                <SelectBoxWithValidate
+                  label="Choose level"
+                  options={levelList}
                   value={field.value}
-                  onChange={field.onChange}
-                  errors={errors.subjects}
+                  onValueChange={field.onChange}
                 />
               )}
             />
+            {errors.level && <ErrorShow error={errors.level.message} />}
           </div>
-          <DefaultButton type="submit" label="Create a class" />
+          <div className="col-span-12 space-y-2">
+            {subject?.map((item) => (
+              <div
+                key={item.school_class_id}
+                className="p-3 bg-sidebar-accent rounded-lg border border-gray-200 shadow-sm flex justify-between items-center"
+              >
+                <span className="font-medium text-primary-text">Subject</span>
+                <span className="text-primary-text">{item.subject_name}</span>
+              </div>
+            ))}
+            {subject !== null && subject.length === 0 && (
+              <div className="p-3 text-center bg-sidebar-accent rounded-lg border border-gray-200 shadow-sm flex justify-between items-center">
+                <Link to="/add-subject" className="text-primary-text underline">
+                  first create of subject
+                </Link>
+              </div>
+            )}
+          </div>
+          <div className="col-span-12 space-y-2">
+            <DefaultButton
+              type="submit"
+              disabled={disabled}
+              disabledData={disabled}
+              label="Create a class"
+            />
+          </div>
         </div>
       </form>
     </ContentWithTitle>

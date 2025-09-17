@@ -6,8 +6,10 @@ import {
   SelectBoxWithValidate,
 } from "@/components/custom/inputs";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const OfficeWork = ({ Controller, control, errors }) => {
+  const levelList = useSelector((state) => state.persisted?.levelList.list);
   return (
     <ContentWithTitle title="office Work">
       <div className="grid grid-cols-12 gap-4">
@@ -78,6 +80,21 @@ const OfficeWork = ({ Controller, control, errors }) => {
             )}
           />
           {errors.subject && <ErrorShow error={errors.subject.message} />}
+        </div>
+        <div className="col-span-12">
+          <Controller
+            name="level"
+            control={control}
+            render={({ field }) => (
+              <SelectBoxWithValidate
+                label="Choose level"
+                options={levelList}
+                value={field.value}
+                onValueChange={field.onChange}
+              />
+            )}
+          />
+          {errors.level && <ErrorShow error={errors.level.message} />}
         </div>
       </div>
     </ContentWithTitle>

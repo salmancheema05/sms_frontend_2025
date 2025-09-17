@@ -29,6 +29,8 @@ import ViewAllTeachers from "@/pages/admin/teacherManagement/viewAllTeachers";
 import DetailTeacher from "@/pages/admin/teacherManagement/detailTeacher";
 import ClassAsign from "@/pages/admin/teacherManagement/classAsign";
 import AddSubject from "@/pages/admin/subject management/addSubject";
+import { useGetAllLevelapiMutation } from "@/services/level";
+import { setLevel } from "@/redux/level";
 const Routers = () => {
   const { token, refreshToken } = useSelector(
     (state) => state.persisted?.user_auth
@@ -41,12 +43,14 @@ const Routers = () => {
   const maritalStatus = useSelector(
     (state) => state.persisted?.maritalStatusList.list
   );
+  const levelList = useSelector((state) => state.persisted?.levelList.list);
   const location = useLocation();
   const { setPageName } = useStateContext();
   const { data: gender, error } = useGetAllGenderapiQuery();
   const [getAllSessionapi] = useGetAllSessionapiMutation();
   const [getAllBloodGroupListapi] = useGetAllBloodGroupListapiMutation();
   const [getAllMaritalListapi] = useGetAllMaritalListapiMutation();
+  const [getAllLevelapi] = useGetAllLevelapiMutation();
   const { createNewToken } = useCreateToken();
   const dispatch = useDispatch();
   const checkLoctation = () => {
@@ -71,17 +75,7 @@ const Routers = () => {
     try {
       if (token) {
         const res = await getAllSessionapi({ token: token });
-        let newToken = token;
-        if (res.data.error) {
-          const result = await createNewToken({
-            refreshToken: refreshToken,
-            token: token,
-          });
-          newToken = result.message;
-        } else {
-          const res = await getAllSessionapi({ token: newToken });
-          dispatch(setSession(res.data.message));
-        }
+        dispatch(setSession(res.data.message));
       }
     } catch (err) {
       console.error(err);
@@ -90,17 +84,7 @@ const Routers = () => {
   const getAllbloodGroup = async () => {
     try {
       const res = await getAllBloodGroupListapi({ token: token });
-      let newToken = token;
-      if (res.data.error) {
-        const result = await createNewToken({
-          refreshToken: refreshToken,
-          token: token,
-        });
-        newToken = result.message;
-      } else {
-        const res = await getAllBloodGroupListapi({ token: newToken });
-        dispatch(setBloodGroup(res.data.result));
-      }
+      dispatch(setBloodGroup(res.data.result));
     } catch (err) {
       console.error(err);
     }
@@ -108,17 +92,15 @@ const Routers = () => {
   const getAllMeritalStatus = async () => {
     try {
       const res = await getAllMaritalListapi({ token: token });
-      let newToken = token;
-      if (res.data.error) {
-        const result = await createNewToken({
-          refreshToken: refreshToken,
-          token: token,
-        });
-        newToken = result.message;
-      } else {
-        const res = await getAllMaritalListapi({ token: newToken });
-        dispatch(setMaritalStatus(res.data.result));
-      }
+      dispatch(setMaritalStatus(res.data.result));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const getAllLevel = async () => {
+    try {
+      const res = await getAllLevelapi({ token: token });
+      dispatch(setLevel(res.data.result));
     } catch (err) {
       console.error(err);
     }
@@ -129,13 +111,15 @@ const Routers = () => {
         genderList.length == 0 &&
         sessionList.length == 0 &&
         bloodGroup.length == 0 &&
-        maritalStatus.length == 0
+        maritalStatus.length == 0 &&
+        levelList.length == 0
       ) {
         console.log("api call in route file");
         getAllGender();
         getAllSession();
         getAllbloodGroup();
         getAllMeritalStatus();
+        getAllLevel();
       }
     }
   }, [gender, token, dispatch]);

@@ -1,4 +1,5 @@
 import { UploadAndPreview } from "@/components/custom/admin/uploadPicture";
+import DefaultButton from "@/components/custom/button";
 import ContentWithTitle from "@/components/custom/div";
 import DynamicTwoFields from "@/components/custom/dynamicInput";
 import ErrorShow from "@/components/custom/errorShow";
@@ -210,6 +211,9 @@ const TeacherInformation = ({
             {errors.qualification && (
               <ErrorShow error={errors.qualification.message} />
             )}
+          </div>
+          <div className="col-span-12">
+            <DefaultButton type="submit" label="Add Teacher" />
           </div>
         </div>
       </ContentWithTitle>

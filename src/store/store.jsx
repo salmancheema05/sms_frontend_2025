@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userAuthReducer from "@/redux/userAuth";
 import genderReducer from "@/redux/genderSlice";
+import LevelReducer from "@/redux/level";
 import sessionReducer from "@/redux/sessionSlice";
 import bloodGroupListReducer from "@/redux/bloodListSlice";
 import MaritalStatusReducer from "@/redux/maritalStatus";
@@ -16,6 +17,7 @@ import { bloodGroupListApi } from "@/services/bloodList";
 import { maritalStatusApi } from "@/services/maritalStatus";
 import { addTeacherApi } from "@/services/teacher";
 import { subjectApi } from "@/services/subject";
+import { levelApi } from "@/services/level";
 const persistConfig = {
   key: "root",
   storage,
@@ -27,6 +29,7 @@ const rootReducer = combineReducers({
   sessionList: sessionReducer,
   bloodGroupList: bloodGroupListReducer,
   maritalStatusList: MaritalStatusReducer,
+  levelList: LevelReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -45,6 +48,7 @@ export const store = configureStore({
     [maritalStatusApi.reducerPath]: maritalStatusApi.reducer,
     [addTeacherApi.reducerPath]: addTeacherApi.reducer,
     [subjectApi.reducerPath]: subjectApi.reducer,
+    [levelApi.reducerPath]: levelApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -59,7 +63,8 @@ export const store = configureStore({
       .concat(bloodGroupListApi.middleware)
       .concat(maritalStatusApi.middleware)
       .concat(addTeacherApi.middleware)
-      .concat(subjectApi.middleware),
+      .concat(subjectApi.middleware)
+      .concat(levelApi.middleware),
 });
 
 export const persistor = persistStore(store);

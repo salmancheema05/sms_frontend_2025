@@ -7,9 +7,10 @@ const ViewClassDetailModal = ({
   modalTitle,
   data,
 }) => {
+  console.log(data);
   return modalOpen ? (
     <ModalLayout>
-      <div className="bg-white w-[60%] h-[30rem] rounded-lg shadow-lg">
+      <div className="bg-primary-bg w-[60%] h-[30rem] rounded-lg shadow-lg">
         <Header
           title={data.school_class_name}
           close={() => setModalOpen(false)}
@@ -36,9 +37,9 @@ const ViewClassDetailModal = ({
               Subject
             </legend>
             <div className="m-3">
-              <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+              <table className="min-w-full  rounded-lg shadow-md">
                 <thead>
-                  <tr className="bg-blue-500 text-white">
+                  <tr className="dark:bg-[#111826] text-white">
                     <th className="py-3 px-4 text-left text-sm font-semibold">
                       SR.No
                     </th>
@@ -56,9 +57,9 @@ const ViewClassDetailModal = ({
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-primary-bg">
                   {data.subjects.map((item, index) => (
-                    <tr className="hover:bg-gray-50" key={index}>
+                    <tr className="" key={index}>
                       <td className="py-2 px-4 border-t border-gray-200">
                         {index + 1}
                       </td>

@@ -34,6 +34,7 @@ const schema = yup.object().shape({
   nic_number: yup.number().required("NIC Number is required"),
   contact_number: yup.number().required("Contact Number is required"),
   choose_gender: yup.string().required("Choose Gender is required"),
+  level: yup.string().required("Choose Level is required"),
   choose_blood_group: yup.string().required("Choose Blood Group is required"),
   current_adress: yup.string().required("Current Address is required"),
   email: yup
@@ -90,12 +91,12 @@ const AddNewTeacher = () => {
       formData.append("job_type", data.job_type);
       formData.append("qualification", qualificationJson);
       formData.append("subject", data.subject);
+      formData.append("level", data.level);
       if (data.file) {
         formData.append("image", data.file);
       }
       const result = await addTeacherapi({ token: token, formdata: formData });
       if (result.data.error) {
-        console.log("new token");
         const res = await createNewToken({
           refreshToken: refreshToken,
           token: token,
@@ -164,10 +165,6 @@ const AddNewTeacher = () => {
         setPreview={setPreview}
         errors={errors}
       />
-
-      <div className="col-span-3">
-        <DefaultButton type="submit" label="Add Teacher" />
-      </div>
     </form>
   );
 };

@@ -11,7 +11,6 @@ const useCreateToken = () => {
         refreshToken: refreshToken,
         token: token,
       });
-
       const decoded = jwtDecode(result.data.message);
 
       const userData = {
