@@ -4,10 +4,11 @@ import TeacherInformation from "./components/teacherInformation";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAddTeacherapiMutation } from "@/services/teacher";
 import useCreateToken from "@/hooks/createNewToken";
+import { useFetchAllSubjectCodeapiMutation } from "@/services/subject";
 const schema = yup.object().shape({
   teacher_salary: yup
     .number()
@@ -16,10 +17,7 @@ const schema = yup.object().shape({
     )
     .typeError("Salary must be a number")
     .required("Salary is required"),
-  subject: yup
-    .string()
-    .required("Subject is required")
-    .transform((value) => (value ? value.toLowerCase() : value)),
+  subject_code_id: yup.string().required("Select Subject Code is required"),
   job_type: yup
     .string()
     .required("Job Type is required")
@@ -67,9 +65,31 @@ const AddNewTeacher = () => {
       email: "",
     },
   });
+  const [fetchAllSubjectCodeapi] = useFetchAllSubjectCodeapiMutation();
+  const [subjectCode, setSubjectCode] = useState([]);
   const [fileName, setFileName] = useState(null);
   const [preview, setPreview] = useState(null);
   const [addTeacherapi] = useAddTeacherapiMutation();
+  const fetchAllSubjectsCode = async () => {
+    try {
+      if (token) {
+        const res = await fetchAllSubjectCodeapi({
+          school_id: school_id,
+          token: token,
+        });
+        if (res.data.error) {
+          await createNewToken({
+            refreshToken: refreshToken,
+            token: token,
+          });
+        } else {
+          setSubjectCode(res.data.result);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const onSubmit = async (data) => {
     try {
       const qualificationJson = JSON.stringify(data.qualification);
@@ -90,7 +110,7 @@ const AddNewTeacher = () => {
       formData.append("current_adress", data.current_adress);
       formData.append("job_type", data.job_type);
       formData.append("qualification", qualificationJson);
-      formData.append("subject", data.subject);
+      formData.append("subject_code_id", data.subject_code_id);
       formData.append("level", data.level);
       if (data.file) {
         formData.append("image", data.file);
@@ -120,6 +140,8 @@ const AddNewTeacher = () => {
           current_adress: "",
           email: "",
           qualification: [], // array → reset to empty
+          level: "",
+          subject_code_id: "",
         });
         setFileName(null);
         setPreview(null);
@@ -153,9 +175,17 @@ const AddNewTeacher = () => {
     }
     return email;
   };
+  useEffect(() => {
+    fetchAllSubjectsCode();
+  }, [token]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <OfficeWork Controller={Controller} control={control} errors={errors} />
+      <OfficeWork
+        Controller={Controller}
+        control={control}
+        errors={errors}
+        subjectCode={subjectCode}
+      />
       <TeacherInformation
         Controller={Controller}
         control={control}

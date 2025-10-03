@@ -242,6 +242,10 @@ export function AppSidebar({ ...props }) {
             url: "add-subject",
           },
           {
+            title: "create subject code",
+            url: "create-subject-code",
+          },
+          {
             title: "Subject",
             url: "",
           },

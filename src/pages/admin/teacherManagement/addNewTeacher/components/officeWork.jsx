@@ -8,8 +8,9 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 
-const OfficeWork = ({ Controller, control, errors }) => {
+const OfficeWork = ({ Controller, control, errors, subjectCode }) => {
   const levelList = useSelector((state) => state.persisted?.levelList.list);
+
   return (
     <ContentWithTitle title="office Work">
       <div className="grid grid-cols-12 gap-4">
@@ -49,7 +50,7 @@ const OfficeWork = ({ Controller, control, errors }) => {
           )}
         </div>
 
-        <div className="col-span-6">
+        <div className="col-span-12">
           <Controller
             name="job_type"
             control={control}
@@ -67,21 +68,22 @@ const OfficeWork = ({ Controller, control, errors }) => {
         </div>
         <div className="col-span-6">
           <Controller
-            name="subject"
+            name="subject_code_id"
             control={control}
             render={({ field }) => (
-              <InputWithValidate
-                type="text"
-                label="Subject"
-                placeholder="english"
+              <SelectBoxWithValidate
+                label="Choose subject Code"
+                options={subjectCode}
                 value={field.value}
-                onChange={field.onChange}
+                onValueChange={field.onChange}
               />
             )}
           />
-          {errors.subject && <ErrorShow error={errors.subject.message} />}
+          {errors.subject_code_id && (
+            <ErrorShow error={errors.subject_code_id.message} />
+          )}
         </div>
-        <div className="col-span-12">
+        <div className="col-span-6">
           <Controller
             name="level"
             control={control}

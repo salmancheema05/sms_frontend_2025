@@ -28,9 +28,11 @@ import { setMaritalStatus } from "@/redux/maritalStatus";
 import ViewAllTeachers from "@/pages/admin/teacherManagement/viewAllTeachers";
 import DetailTeacher from "@/pages/admin/teacherManagement/detailTeacher";
 import ClassAsign from "@/pages/admin/teacherManagement/classAsign";
-import AddSubject from "@/pages/admin/subject management/addSubject";
+import AddSubject from "@/pages/admin/subjectManagement/addSubject";
 import { useGetAllLevelapiMutation } from "@/services/level";
 import { setLevel } from "@/redux/level";
+import CreateSubjectCode from "@/pages/admin/subjectManagement/createSubjectCode";
+import AssignInformation from "@/pages/admin/teacherManagement/assignInformation";
 const Routers = () => {
   const { token, refreshToken } = useSelector(
     (state) => state.persisted?.user_auth
@@ -170,6 +172,8 @@ const Routers = () => {
           <Route path="detail/:teacher_id" element={<DetailTeacher />} />
           <Route path="class-asign-to-teacher" element={<ClassAsign />} />
           <Route path="add-subject" element={<AddSubject />} />
+          <Route path="create-subject-code" element={<CreateSubjectCode />} />
+          <Route path="assign-information" element={<AssignInformation />} />
         </Route>
       </Route>
     </Routes>

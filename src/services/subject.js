@@ -16,6 +16,29 @@ export const subjectApi = createApi({
         },
       }),
     }),
+    createSubjectCodeapi: builder.mutation({
+      query: (data) => ({
+        url: "createsubjectcode",
+        method: "POST",
+        body: data.object,
+        headers: {
+          authorizated: `Bearer ${data.token}`,
+        },
+      }),
+    }),
+    fetchAllSubjectCodeapi: builder.mutation({
+      query: (data) => ({
+        url: `fetchallsubjectcode?school_id=${data.school_id}`,
+        method: "GET",
+        headers: {
+          authorizated: `Bearer ${data.token}`,
+        },
+      }),
+    }),
   }),
 });
-export const { useCreateSubjectapiMutation } = subjectApi;
+export const {
+  useCreateSubjectapiMutation,
+  useCreateSubjectCodeapiMutation,
+  useFetchAllSubjectCodeapiMutation,
+} = subjectApi;

@@ -11,15 +11,21 @@ import { SelectBoxWithValidate } from "@/components/custom/inputs";
 import { useSelector } from "react-redux";
 import ErrorShow from "@/components/custom/errorShow";
 
-import { useCreateSubjectapiMutation } from "@/services/subject";
+import {
+  useCreateSubjectapiMutation,
+  useFetchAllSubjectCodeapiMutation,
+} from "@/services/subject";
+import DynamicTwoFieldsWithSelectBox from "@/components/custom/dynamictwoFieledswithSelectBox";
 const schema = yup.object().shape({
   class_id: yup.string().required("Class is required"),
+  level: yup.string().required("select level is required"),
   subjects: yup.array().of(
     yup.object().shape({
       subject_name: yup.string().required("Subject name is required"),
       board_or_writer_name: yup
         .string()
         .required("Writer name / Board name is required"),
+      subject_code: yup.string().required("select Subject code is required"),
     })
   ),
 });
@@ -38,7 +44,10 @@ const AddSubject = () => {
   const { createNewToken } = useCreateToken();
   const [getAllClassesapi] = useGetAllClassesapiMutation();
   const [createSubjectapi] = useCreateSubjectapiMutation();
+  const [fetchAllSubjectCodeapi] = useFetchAllSubjectCodeapiMutation();
   const [classes, setClasses] = useState([]);
+  const [subjectCode, setSubjectCode] = useState([]);
+  const levelList = useSelector((state) => state.persisted?.levelList.list);
   const getAllClasses = async () => {
     try {
       if (token) {
@@ -63,28 +72,50 @@ const AddSubject = () => {
       console.error(err);
     }
   };
-
+  const fetchAllSubjectsCode = async () => {
+    try {
+      if (token) {
+        const res = await fetchAllSubjectCodeapi({
+          school_id: school_id,
+          token: token,
+        });
+        if (res.data.error) {
+          await createNewToken({
+            refreshToken: refreshToken,
+            token: token,
+          });
+        } else {
+          setSubjectCode(res.data.result);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const onSubmit = async (data) => {
     try {
       if (token) {
-        console.log("submit button clicked");
         const class_name = data.class_id;
         const removeGrade = class_name.replace("grade", "").trim();
         let subjectArray = data.subjects.map((item) => ({
           ...item,
           subject_name: item.subject_name + " " + removeGrade,
         }));
-        const object = { school_id: school_id, subjects: subjectArray };
+        const object = {
+          school_id: school_id,
+          subjects: subjectArray,
+          level: data.level,
+        };
         const res = await createSubjectapi({ token: token, object: object });
         if (res.data.error) {
           const result = await createNewToken({
             refreshToken: refreshToken,
+            token: token,
           });
           const response = await createSubjectapi({
-            token: result.message,
+            token: result.data.message,
             object: object,
           });
-          console.log("new token", token);
           allfieldRest(response);
         } else {
           allfieldRest(res);
@@ -105,6 +136,7 @@ const AddSubject = () => {
   };
   useEffect(() => {
     getAllClasses();
+    fetchAllSubjectsCode();
   }, [token]);
   return (
     <ContentWithTitle title="Add New Subject">
@@ -125,11 +157,26 @@ const AddSubject = () => {
             />
             {errors.class_id && <ErrorShow error={errors.class_id.message} />}
           </div>
+          <div className="col-span-1">
+            <Controller
+              name="level"
+              control={control}
+              render={({ field }) => (
+                <SelectBoxWithValidate
+                  label="Choose level"
+                  options={levelList}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                />
+              )}
+            />
+            {errors.level && <ErrorShow error={errors.level.message} />}
+          </div>
           <Controller
             name="subjects"
             control={control}
             render={({ field }) => (
-              <DynamicTwoFields
+              <DynamicTwoFieldsWithSelectBox
                 title="Subject"
                 field1Label="Subject Name"
                 field2Label="Writer Name / Board Name"
@@ -137,6 +184,10 @@ const AddSubject = () => {
                 field2Placeholder="Writer Name / Board"
                 field1Name="subject_name"
                 field2Name="board_or_writer_name"
+                selectFieldName="subject_code"
+                selectFieldLabel="Select Subject code"
+                selectFieldPlaceholder="Select Subject code"
+                selectOptions={subjectCode}
                 value={field.value}
                 onChange={field.onChange}
                 errors={errors.subjects}

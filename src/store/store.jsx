@@ -18,6 +18,7 @@ import { maritalStatusApi } from "@/services/maritalStatus";
 import { addTeacherApi } from "@/services/teacher";
 import { subjectApi } from "@/services/subject";
 import { levelApi } from "@/services/level";
+import { assignApi } from "@/services/assign";
 const persistConfig = {
   key: "root",
   storage,
@@ -49,6 +50,7 @@ export const store = configureStore({
     [addTeacherApi.reducerPath]: addTeacherApi.reducer,
     [subjectApi.reducerPath]: subjectApi.reducer,
     [levelApi.reducerPath]: levelApi.reducer,
+    [assignApi.reducerPath]: assignApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -64,7 +66,8 @@ export const store = configureStore({
       .concat(maritalStatusApi.middleware)
       .concat(addTeacherApi.middleware)
       .concat(subjectApi.middleware)
-      .concat(levelApi.middleware),
+      .concat(levelApi.middleware)
+      .concat(assignApi.middleware),
 });
 
 export const persistor = persistStore(store);

@@ -1,5 +1,5 @@
 import React from "react";
-import { Pencil, Trash, Eye } from "lucide-react";
+import { Pencil, Trash, Eye, FileCog } from "lucide-react";
 
 const ActionsDropdown = ({ actions }) => {
   return (
@@ -29,6 +29,14 @@ const ActionsDropdown = ({ actions }) => {
               className="w-full flex flex-col items-center  py-4 dark:hover:bg-accent cursor-pointer gap-2"
             >
               <Eye size={16} />
+            </li>
+          ) : item.label === "file" ? (
+            <li
+              key={index}
+              onClick={item.handler}
+              className="w-full flex flex-col items-center  py-4 dark:hover:bg-accent cursor-pointer gap-2"
+            >
+              <FileCog size={16} />
             </li>
           ) : null
         )}
