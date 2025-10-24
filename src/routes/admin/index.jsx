@@ -33,13 +33,14 @@ import { useGetAllLevelapiMutation } from "@/services/level";
 import { setLevel } from "@/redux/level";
 import CreateSubjectCode from "@/pages/admin/subjectManagement/createSubjectCode";
 import AssignInformation from "@/pages/admin/teacherManagement/assignInformation";
-import CreateTime from "@/pages/admin/SchoolClassesTime/createClassTime";
+
 import ViewSubjectAndClasses from "@/pages/admin/teacherManagement/viewSubjectsAndClasses";
 import CreateClassTable from "@/pages/admin/timetable/classtable/createTable";
 import CreatePeriod from "@/pages/admin/timetable/classtable/period";
 import { useGetAllDaysapiMutation } from "@/services/day";
 import { setDay } from "@/redux/daySlice";
-import CreateSchoolTime from "@/pages/admin/SchoolClassesTime/createschooltime";
+import CreateSchoolTime from "@/pages/admin/SchoolTimeManagement/createSchoolTime";
+import CreateTime from "@/pages/admin/SchoolTimeManagement/createClassTime";
 const Routers = () => {
   const { token, refreshToken } = useSelector(
     (state) => state.persisted?.user_auth

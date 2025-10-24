@@ -14,16 +14,19 @@ import { useSelector } from "react-redux";
 import useCreateToken from "@/hooks/createNewToken";
 import { useSchoolClassTimeApiMutation } from "@/services/period";
 import AlertModel from "@/components/custom/admin/modal/alertModel";
+import MultiSelect from "@/components/custom/multiSelect";
 const schema = yup.object().shape({
-  institute_class_id: yup.string().required(" Class is required"),
-  start_time: yup.string().required("Start time is required"),
-  end_time: yup.string().required("End time is required"),
+  institute_class_id: yup
+    .array()
+    .min(1, "Please select at least one class")
+    .required("Classes are required"),
 });
 const CreateTime = () => {
   const { token, refreshToken, school_id, user_id } = useSelector(
     (state) => state.persisted?.user_auth
   );
   const [classes, setClasses] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]);
   const { createNewToken } = useCreateToken();
   const {
     handleSubmit,
@@ -34,8 +37,6 @@ const CreateTime = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       institute_class_id: "",
-      start_time: "",
-      end_time: "",
     },
   });
   const [getAllClassesForSelectboxapi] =
@@ -64,43 +65,8 @@ const CreateTime = () => {
   };
   const onSubmit = async (data) => {
     try {
-      setDisbled(true);
-      const obj = {
-        ...data,
-        school_id: school_id,
-        creator_id: user_id,
-      };
-      const res = await schoolClassTimeApi({ object: obj, token: token });
-      if (res.data.error) {
-        console.log("create new token");
-        const response = await createNewToken({
-          refreshToken: refreshToken,
-          token: token,
-        });
-        const newToken = response.data.message;
-        const saveData = await schoolClassTimeApi({
-          object: obj,
-          token: newToken,
-        });
-        setAlertMessage(saveData.data.message);
-        reset({
-          institute_class_id: "",
-          start_time: "",
-          end_time: "",
-        });
-        setAlertModelOpen(true);
-        setDisbled(false);
-      } else {
-        console.log("old token");
-        setAlertMessage(saveData.data.message);
-        setAlertModelOpen(true);
-        reset({
-          institute_class_id: "",
-          start_time: "",
-          end_time: "",
-        });
-        setDisbled(false);
-      }
+      //setDisbled(true);
+      console.log(data);
     } catch (err) {
       console.error(err);
     }
@@ -126,11 +92,12 @@ const CreateTime = () => {
               name="institute_class_id"
               control={control}
               render={({ field }) => (
-                <SelectBoxWithValidate
-                  label="Select Class"
+                <MultiSelect
                   options={classes}
+                  placeholder="Select class..."
                   value={field.value}
                   onValueChange={field.onChange}
+                  onBlur={field.onBlur}
                 />
               )}
             />
@@ -138,43 +105,13 @@ const CreateTime = () => {
               <ErrorShow error={errors.institute_class_id.message} />
             )}
           </div>
-          <div className="col-span-12">
-            <Controller
-              name="start_time"
-              control={control}
-              render={({ field }) => (
-                <InputWithValidate
-                  type="time"
-                  label="School Start Time"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-            {errors.start_time && (
-              <ErrorShow error={errors.start_time.message} />
-            )}
-          </div>
-          <div className="col-span-12">
-            <Controller
-              name="end_time"
-              control={control}
-              render={({ field }) => (
-                <InputWithValidate
-                  type="time"
-                  label="School End Time"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-            {errors.end_time && <ErrorShow error={errors.end_time.message} />}
-          </div>
-          <div className="col-span-12">
+
+          <div className="col-span-12 space-y-2">
             <DefaultButton
               type="submit"
+              disabled={disabled}
               disabledData={disabled}
-              label="Create time"
+              label="Create a class"
             />
           </div>
         </div>
