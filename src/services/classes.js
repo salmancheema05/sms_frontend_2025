@@ -15,6 +15,18 @@ export const classesApi = createApi({
         },
       }),
     }),
+    getAllClassesForSelectboxapi: builder.mutation({
+      query: (data) => ({
+        url: `fetchallclssesforselectbox?school_id=${data.school_id}`,
+        method: "GET",
+        headers: {
+          authorizated: `Bearer ${data.token}`,
+        },
+      }),
+    }),
   }),
 });
-export const { useGetAllClassesapiMutation } = classesApi;
+export const {
+  useGetAllClassesapiMutation,
+  useGetAllClassesForSelectboxapiMutation,
+} = classesApi;

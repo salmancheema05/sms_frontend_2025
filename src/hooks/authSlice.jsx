@@ -1,4 +1,5 @@
 import { setBloodGroup } from "@/redux/bloodListSlice";
+import { setDay } from "@/redux/daySlice";
 import { setGender } from "@/redux/genderSlice";
 import { setLevel } from "@/redux/level";
 import { setMaritalStatus } from "@/redux/maritalStatus";
@@ -28,6 +29,7 @@ const useAuth = () => {
       dispatch(setBloodGroup([]));
       dispatch(setMaritalStatus([]));
       dispatch(setLevel([]));
+      dispatch(setDay([]));
     } catch (err) {
       console.error("user Auth updated hook ", err);
     }

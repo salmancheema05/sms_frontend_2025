@@ -7,7 +7,6 @@ const ViewClassDetailModal = ({
   modalTitle,
   data,
 }) => {
-  console.log(data);
   return modalOpen ? (
     <ModalLayout>
       <div className="bg-primary-bg w-[60%] h-[30rem] rounded-lg shadow-lg">

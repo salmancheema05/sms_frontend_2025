@@ -146,6 +146,10 @@ export function AppSidebar({ ...props }) {
             url: "class-asign-to-teacher",
           },
           {
+            title: "View Subjects And Classes",
+            url: "view-classes-and-subjects",
+          },
+          {
             title: "View Teacher  Schedule",
             url: "",
           },
@@ -199,7 +203,7 @@ export function AppSidebar({ ...props }) {
         items: [
           {
             title: "Create Classes Time Table",
-            url: "",
+            url: "create-class-table",
           },
           {
             title: "View All Classes Time Table",
@@ -247,6 +251,26 @@ export function AppSidebar({ ...props }) {
           },
           {
             title: "Subject",
+            url: "",
+          },
+        ],
+      },
+      {
+        title: "School Classes Time",
+        url: "#",
+        icon: SquareTerminal,
+        isActive: false,
+        items: [
+          {
+            title: "Create School Time",
+            url: "create-school-time",
+          },
+          {
+            title: "Create Class Time",
+            url: "create-class-time",
+          },
+          {
+            title: "View All Classes Time",
             url: "",
           },
         ],

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Select,
   SelectContent,
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+// import { MultiSelect } from "@/components/multi-select";
 export const DefaultInput = ({ label, ...rest }) => {
   return (
     <>
@@ -82,45 +83,91 @@ export const DefaultDatepicker = ({ label, value, onChange }) => {
     </>
   );
 };
-export const DefaultSelectBox = ({ labelName, options, ...rest }) => {
+export const DefaultSelectBox = ({ label, options, ...rest }) => {
   return (
-    <>
-      <div class="relative w-full max-w-sm">
-        <label
-          for="beautiful-select"
-          className="block text-sm font-medium px-1 text-gray-400 "
-        >
-          {labelName}
+    <Select {...rest}>
+      <div className="flex">
+        <label className="block text-sm font-medium px-1 text-gray-400 mb-2.5">
+          {label}
         </label>
-        <select
-          className="block w-full mt-1.5 px-4 py-2.5  text-gray-400 bg-white border border-gray-300 rounded-lg shadow-sm appearance-none cursor-pointer"
-          {...rest}
-        >
-          <option value="">{labelName}</option>
-          {options?.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.data}
-            </option>
-          ))}
-        </select>
-        <svg
-          class="absolute right-3 top-10 w-5 h-5 text-gray-400 dark:text-gray-500 pointer-events-none"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
-          ></path>
-        </svg>
       </div>
-    </>
+      <SelectTrigger className="w-full py-5 text-gray-400">
+        <SelectValue placeholder={label} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>{label}</SelectLabel>
+          {options?.map((item, index) => {
+            const keys = Object.keys(item);
+            const valueKey = keys[0];
+            const labelKey = keys[1];
+
+            return (
+              <SelectItem
+                key={item[valueKey] || index}
+                value={String(item[valueKey])}
+                className="text-gray-400"
+              >
+                {item[labelKey]}
+              </SelectItem>
+            );
+          })}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 };
+// export const MultiSelectBox = ({ label, options, ...rest }) => {
+//   const multiSelectRef = useRef(null);
+//   const selectAll = () => {
+//     if (multiSelectRef.current) {
+//       multiSelectRef.current.selectAll();
+//     }
+//   };
+
+//   const clearAll = () => {
+//     if (multiSelectRef.current) {
+//       multiSelectRef.current.clearAll();
+//     }
+//   };
+
+//   const focusInput = () => {
+//     if (multiSelectRef.current) {
+//       multiSelectRef.current.focus();
+//     }
+//   };
+
+//   const selectSpecific = () => {
+//     if (multiSelectRef.current) {
+//       multiSelectRef.current.setValue(["react", "vue"]);
+//     }
+//   };
+//   return (
+//     <div className="space-y-4">
+//       <MultiSelect
+//         ref={multiSelectRef}
+//         options={options}
+//         onValueChange={(value) => console.log("Value changed:", value)}
+//         placeholder="Controlled via ref methods"
+//       />
+
+//       <div className="flex flex-wrap gap-2">
+//         <Button onClick={selectAll} size="sm">
+//           Select All
+//         </Button>
+//         <Button onClick={clearAll} size="sm" variant="outline">
+//           Clear All
+//         </Button>
+//         <Button onClick={focusInput} size="sm" variant="outline">
+//           Focus Input
+//         </Button>
+//         <Button onClick={selectSpecific} size="sm" variant="secondary">
+//           Select React & Vue
+//         </Button>
+//       </div>
+//     </div>
+//   );
+// };
 export const SelectBoxWithValidate = ({ label, options, ...rest }) => {
   return (
     <Select {...rest}>

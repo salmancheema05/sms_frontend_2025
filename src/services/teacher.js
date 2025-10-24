@@ -55,6 +55,15 @@ export const addTeacherApi = createApi({
         },
       }),
     }),
+    viewTeacherSubjectsAndClasses: builder.mutation({
+      query: (data) => ({
+        url: `teacherssubjectsandclasses?school_id=${data.school_id}`,
+        method: "GET",
+        headers: {
+          authorizated: `Bearer ${data.token}`,
+        },
+      }),
+    }),
   }),
 });
 export const {
@@ -63,4 +72,5 @@ export const {
   useGetTeacherapiMutation,
   useGetTeacherImageMutation,
   useTeacherINSchooAndFreeapiMutation,
+  useViewTeacherSubjectsAndClassesMutation,
 } = addTeacherApi;

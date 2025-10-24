@@ -33,6 +33,13 @@ import { useGetAllLevelapiMutation } from "@/services/level";
 import { setLevel } from "@/redux/level";
 import CreateSubjectCode from "@/pages/admin/subjectManagement/createSubjectCode";
 import AssignInformation from "@/pages/admin/teacherManagement/assignInformation";
+import CreateTime from "@/pages/admin/SchoolClassesTime/createClassTime";
+import ViewSubjectAndClasses from "@/pages/admin/teacherManagement/viewSubjectsAndClasses";
+import CreateClassTable from "@/pages/admin/timetable/classtable/createTable";
+import CreatePeriod from "@/pages/admin/timetable/classtable/period";
+import { useGetAllDaysapiMutation } from "@/services/day";
+import { setDay } from "@/redux/daySlice";
+import CreateSchoolTime from "@/pages/admin/SchoolClassesTime/createschooltime";
 const Routers = () => {
   const { token, refreshToken } = useSelector(
     (state) => state.persisted?.user_auth
@@ -46,6 +53,7 @@ const Routers = () => {
     (state) => state.persisted?.maritalStatusList.list
   );
   const levelList = useSelector((state) => state.persisted?.levelList.list);
+  const daysList = useSelector((state) => state.persisted?.daysList.list);
   const location = useLocation();
   const { setPageName } = useStateContext();
   const { data: gender, error } = useGetAllGenderapiQuery();
@@ -54,6 +62,7 @@ const Routers = () => {
   const [getAllMaritalListapi] = useGetAllMaritalListapiMutation();
   const [getAllLevelapi] = useGetAllLevelapiMutation();
   const { createNewToken } = useCreateToken();
+  const [getAllDaysapi] = useGetAllDaysapiMutation();
   const dispatch = useDispatch();
   const checkLoctation = () => {
     if (location.pathname === "/") {
@@ -107,6 +116,14 @@ const Routers = () => {
       console.error(err);
     }
   };
+  const getAllday = async () => {
+    try {
+      const res = await getAllDaysapi({ token: token });
+      dispatch(setDay(res.data.result));
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     if (token) {
       if (
@@ -114,7 +131,8 @@ const Routers = () => {
         sessionList.length == 0 &&
         bloodGroup.length == 0 &&
         maritalStatus.length == 0 &&
-        levelList.length == 0
+        levelList.length == 0 &&
+        daysList.length == 0
       ) {
         console.log("api call in route file");
         getAllGender();
@@ -122,6 +140,7 @@ const Routers = () => {
         getAllbloodGroup();
         getAllMeritalStatus();
         getAllLevel();
+        getAllday();
       }
     }
   }, [gender, token, dispatch]);
@@ -174,6 +193,14 @@ const Routers = () => {
           <Route path="add-subject" element={<AddSubject />} />
           <Route path="create-subject-code" element={<CreateSubjectCode />} />
           <Route path="assign-information" element={<AssignInformation />} />
+          <Route path="create-class-time" element={<CreateTime />} />
+          <Route
+            path="view-classes-and-subjects"
+            element={<ViewSubjectAndClasses />}
+          />
+          <Route path="create-class-table" element={<CreateClassTable />} />
+          <Route path="create-period" element={<CreatePeriod />} />
+          <Route path="create-school-time" element={<CreateSchoolTime />} />
         </Route>
       </Route>
     </Routes>

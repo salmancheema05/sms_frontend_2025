@@ -53,7 +53,6 @@ const AddSubject = () => {
       if (token) {
         const res = await getAllClassesapi({ token: token });
         if (res.data.error) {
-          console.log("create new function");
           await createNewToken({
             refreshToken: refreshToken,
             token: token,

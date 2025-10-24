@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import userAuthReducer from "@/redux/userAuth";
 import genderReducer from "@/redux/genderSlice";
 import LevelReducer from "@/redux/level";
+import DayReducer from "@/redux/daySlice";
 import sessionReducer from "@/redux/sessionSlice";
 import bloodGroupListReducer from "@/redux/bloodListSlice";
 import MaritalStatusReducer from "@/redux/maritalStatus";
@@ -19,6 +20,8 @@ import { addTeacherApi } from "@/services/teacher";
 import { subjectApi } from "@/services/subject";
 import { levelApi } from "@/services/level";
 import { assignApi } from "@/services/assign";
+import { periodApi } from "@/services/period";
+import { dayApi } from "@/services/day";
 const persistConfig = {
   key: "root",
   storage,
@@ -31,6 +34,7 @@ const rootReducer = combineReducers({
   bloodGroupList: bloodGroupListReducer,
   maritalStatusList: MaritalStatusReducer,
   levelList: LevelReducer,
+  daysList: DayReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -51,6 +55,8 @@ export const store = configureStore({
     [subjectApi.reducerPath]: subjectApi.reducer,
     [levelApi.reducerPath]: levelApi.reducer,
     [assignApi.reducerPath]: assignApi.reducer,
+    [periodApi.reducerPath]: periodApi.reducer,
+    [dayApi.reducerPath]: dayApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -67,7 +73,9 @@ export const store = configureStore({
       .concat(addTeacherApi.middleware)
       .concat(subjectApi.middleware)
       .concat(levelApi.middleware)
-      .concat(assignApi.middleware),
+      .concat(assignApi.middleware)
+      .concat(periodApi.middleware)
+      .concat(dayApi.middleware),
 });
 
 export const persistor = persistStore(store);
