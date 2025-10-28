@@ -3,7 +3,7 @@ import { Pencil, Trash, Eye, FileCog } from "lucide-react";
 
 const ActionsDropdown = ({ actions }) => {
   return (
-    <div className="flex absolute top-12 transform -translate-x-1/2 w-40 dark:bg-[#111826] border border-gray-600 shadow-lg rounded-md z-50">
+    <div className="flex absolute top-12 transform -translate-x-1/2 w-40 bg-white dark:bg-[#111826] border border-primary-border shadow-lg rounded-md z-50">
       <ul className="w-full">
         {actions.map((item, index) =>
           item.label === "edit" ? (

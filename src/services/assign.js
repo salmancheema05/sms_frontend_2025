@@ -26,9 +26,20 @@ export const assignApi = createApi({
         },
       }),
     }),
+    timeAssignToClassesapi: builder.mutation({
+      query: (data) => ({
+        url: "timeassigntoclasses",
+        method: "POST",
+        body: data,
+        headers: {
+          authorizated: `Bearer ${data.token}`,
+        },
+      }),
+    }),
   }),
 });
 export const {
+  useTimeAssignToClassesapiMutation,
   useTeacherAssignToClassapiMutation,
   useAssignInsertapiMutation,
 } = assignApi;

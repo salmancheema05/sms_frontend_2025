@@ -20,12 +20,13 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import { MultiSelect } from "@/components/multi-select";
 export const DefaultInput = ({ label, ...rest }) => {
   return (
     <>
       <div className="flex mt-2">
-        <Label htmlFor={label}>{label}</Label>
+        <Label htmlFor={label} className="text-input-label-color">
+          {label}
+        </Label>
       </div>
       <div className="mt-2">
         <Input id={label} {...rest} className="h-11" />
@@ -37,7 +38,9 @@ export const InputWithValidate = ({ label, ...rest }) => {
   return (
     <>
       <div className="flex">
-        <Label htmlFor={label}>{label}</Label>
+        <Label htmlFor={label} className="text-input-label-color">
+          {label}
+        </Label>
         <span className="ml-1 mt-1  text-bold text-red-500">*</span>
       </div>
       <div className="">
@@ -52,7 +55,7 @@ export const DefaultDatepicker = ({ label, value, onChange }) => {
     <>
       <Popover>
         <div className="flex mb-1">
-          <label className="block text-sm font-medium px-1 text-gray-400">
+          <label className="block text-sm font-medium px-1 text-input-label-color">
             {label}
           </label>
           <span className="text-red-600">*</span>
@@ -172,7 +175,7 @@ export const SelectBoxWithValidate = ({ label, options, ...rest }) => {
   return (
     <Select {...rest}>
       <div className="flex">
-        <label className="block text-sm font-medium px-1 text-gray-400 mb-2.5">
+        <label className="block text-sm font-medium px-1 text-input-label-color mb-2.5">
           {label}
         </label>
         <span className="text-red-600">*</span>

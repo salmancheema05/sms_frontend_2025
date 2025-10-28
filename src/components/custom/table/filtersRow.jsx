@@ -2,7 +2,7 @@ import React from "react";
 
 const FiltersRow = ({ columns, handleFilterChange }) => {
   return (
-    <tr className="bg-sidebar-accent">
+    <tr className="bg-secondary-color">
       {columns.map((col, index) =>
         col.status === "show" ? (
           col.columnName === "image" ? (
@@ -15,7 +15,7 @@ const FiltersRow = ({ columns, handleFilterChange }) => {
                 onChange={(e) =>
                   handleFilterChange(col.columnName, e.target.value)
                 }
-                className="w-full px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="w-full px-3 py-1 placeholder-input-label-color border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
               />
             </td>
           )

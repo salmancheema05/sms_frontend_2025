@@ -43,8 +43,8 @@ const Table = ({
         setColumns={setColumns}
         columntoggleButtonShow={columntoggleButtonShow}
       />
-      <table className="w-full table-auto border-1 border-white">
-        <thead className="dark:bg-[#111826]  text-white">
+      <table className="w-full table-auto border-1 border-color-border">
+        <thead className="bg-primary-color    text-primary-text">
           <tr>
             {columns
               .filter((col) => col.status === "show")
@@ -63,7 +63,7 @@ const Table = ({
             handleFilterChange={handleFilterChange}
           />
         </thead>
-        <tbody>
+        <tbody className="bg-card-body ">
           {filteredStudents.map((item, index) => (
             <Row
               key={index}

@@ -11,7 +11,7 @@ import {
 import { useGetAllClassesForSelectboxapiMutation } from "@/services/classes";
 import { useSelector } from "react-redux";
 import useCreateToken from "@/hooks/createNewToken";
-import { useGetSchoolClassTimeApiMutation } from "@/services/period";
+import { useGetSchoolTimeApiMutation } from "@/services/period";
 import { useGetSessionByqueryapiMutation } from "@/services/session";
 import { useFetchAllSubjectByClassapiMutation } from "@/services/subject";
 
@@ -44,7 +44,7 @@ const CreateClassTable = () => {
   const { createNewToken } = useCreateToken();
   const [getAllClassesForSelectboxapi] =
     useGetAllClassesForSelectboxapiMutation();
-  const [getSchoolClassTimeApi] = useGetSchoolClassTimeApiMutation();
+  //   const [getSchoolClassTimeApi] = useGetSchoolClassTimeApiMutation();
   const [getSessionByqueryapi] = useGetSessionByqueryapiMutation();
   const [fetchAllSubjectByClassapi] = useFetchAllSubjectByClassapiMutation();
   const getInstituteClasses = async () => {
@@ -69,7 +69,7 @@ const CreateClassTable = () => {
     }
   };
   const handleCallApis = async (data) => {
-    fetchSchoolTime(data);
+    // fetchSchoolTime(data);
     fetchSession(data);
     fetchSubject(data);
   };

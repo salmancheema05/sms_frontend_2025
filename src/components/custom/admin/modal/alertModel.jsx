@@ -15,7 +15,7 @@ const AlertModal = ({
 
   return (
     <ModalLayout>
-      <div className="bg-primary-bg dark:bg-primary-bg w-85 h-55  rounded-xl border border-gray-600  md:w-200 md:h-auto">
+      <div className="bg-primary-color dark:bg-primary-bg w-85 h-55  rounded-xl border border-gray-600  md:w-200 md:h-auto">
         <div className="m-5">
           <p className="mb-5 text-xl font-semibold">{title}</p>
           <p>{description}</p>

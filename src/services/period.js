@@ -6,19 +6,19 @@ export const periodApi = createApi({
     baseUrl: baseUrl,
   }),
   endpoints: (builder) => ({
-    schoolClassTimeApi: builder.mutation({
+    createSchoolTimeApi: builder.mutation({
       query: (data) => ({
         url: "createschooltime",
         method: "POST",
-        body: data.object,
+        body: data,
         headers: {
           authorizated: `Bearer ${data.token}`,
         },
       }),
     }),
-    getSchoolClassTimeApi: builder.mutation({
+    getSchoolTimeApi: builder.mutation({
       query: (data) => ({
-        url: `getschooltimebyquery?school_id=${data.school_id}&institute_class_id=${data.class_id}`,
+        url: `getschooltimebyquery?school_id=${data.school_id}`,
         method: "GET",
         headers: {
           authorizated: `Bearer ${data.token}`,
@@ -27,7 +27,5 @@ export const periodApi = createApi({
     }),
   }),
 });
-export const {
-  useSchoolClassTimeApiMutation,
-  useGetSchoolClassTimeApiMutation,
-} = periodApi;
+export const { useCreateSchoolTimeApiMutation, useGetSchoolTimeApiMutation } =
+  periodApi;

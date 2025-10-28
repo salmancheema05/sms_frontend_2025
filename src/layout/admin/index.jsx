@@ -9,7 +9,7 @@ const AdminLayout = () => {
       <AppSidebar />
       <SidebarInset>
         <TopNavbar />
-        <div className="flex flex-1 flex-col gap-4 p-2 bg-gray-50 dark:bg-[#1C2736] ">
+        <div className="flex flex-1 flex-col gap-4 p-2 bg-gray-200 dark:bg-[#1C2736] ">
           <Outlet />
         </div>
       </SidebarInset>

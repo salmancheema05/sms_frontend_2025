@@ -75,9 +75,9 @@ const TeacherDetail = () => {
   }, [token]);
   return (
     <div className="min-h-screen  flex items-center justify-center p-6">
-      <div className="max-w-5xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+      <div className="max-w-5xl w-full bg-primary-bg rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
         {/* Profile Image */}
-        <div className="md:w-1/3 bg-gray-50 flex items-center justify-center p-6">
+        <div className="md:w-1/3 bg-primary-color flex items-center justify-center p-6">
           <div className="w-full h-96 relative">
             {teacherData && teacherData?.teacher_pic !== "no image" ? (
               <img
@@ -95,40 +95,50 @@ const TeacherDetail = () => {
         </div>
 
         {/* Teacher Info */}
-        <div className="md:w-2/3 p-8 flex flex-col justify-between">
+        <div className="md:w-2/3 p-8 flex flex-col bg-primary-color  justify-between">
           <div>
             {/* Name & Subject */}
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-primary-text ">
               {teacherData?.teacher_name}
             </h1>
-            <h2 className="text-xl text-indigo-600 font-medium mt-1">
+            <h2 className="text-xl text-primary-text font-medium mt-1">
               {teacher.subject}
             </h2>
 
             {/* Contact Info */}
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-primary-text ">
               <p>
-                <span className="font-semibold">Father/Husband Name:</span>
+                <span className="font-semibold text-primary-text ">
+                  Father/Husband Name:
+                </span>
                 {teacherData?.spouse}
               </p>
               <p>
-                <span className="font-semibold">martial Status:</span>
+                <span className="font-semibold text-primary-text ">
+                  martial Status:
+                </span>
                 {teacherData?.marital_status}
               </p>
               <p>
-                <span className="font-semibold">Phone:</span>
+                <span className="font-semibold text-primary-text ">Phone:</span>
                 {teacherData?.contact_number}
               </p>
               <p>
-                <span className="font-semibold">NIC Number:</span>
+                <span className="font-semibold text-primary-text ">
+                  NIC Number:
+                </span>
                 {teacherData?.nic_number}
               </p>
               <p>
-                <span className="font-semibold">Gender:</span>
+                <span className="font-semibold text-primary-text ">
+                  Gender:
+                </span>
                 {teacherData?.gender_name}
               </p>
               <p>
-                <span className="font-semibold">Blood Group:</span>
+                <span className="font-semibold text-primary-text ">
+                  Blood Group:
+                </span>
                 {teacherData?.blood_group_name}
               </p>
 
@@ -137,23 +147,31 @@ const TeacherDetail = () => {
                 {teacherData?.current_adress}
               </p>
               <p>
-                <span className="font-semibold">Email:</span>
+                <span className="font-semibold text-primary-text ">Email:</span>
                 {teacherData?.email}
               </p>
               <p>
-                <span className="font-semibold">joining Date:</span>
+                <span className="font-semibold text-primary-text ">
+                  joining Date:
+                </span>
                 {getOnlyDate(teacherData?.joining_date)}
               </p>
               <p>
-                <span className="font-semibold">Salary:</span>
+                <span className="font-semibold text-primary-text ">
+                  Salary:
+                </span>
                 {teacherData?.teacher_salary}
               </p>
               <p>
-                <span className="font-semibold">Job Type:</span>
+                <span className="font-semibold text-primary-text ">
+                  Job Type:
+                </span>
                 {teacherData?.job_type}
               </p>
               <p>
-                <span className="font-semibold">creator At:</span>
+                <span className="font-semibold text-primary-text ">
+                  creator At:
+                </span>
                 {teacherData?.creator_first_name +
                   " " +
                   teacherData?.creator_last_name}
@@ -162,19 +180,19 @@ const TeacherDetail = () => {
 
             {/* Qualifications */}
             <div className="mt-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">
+              <h3 className="text-lg font-semibold text-primary-text  mb-3">
                 Qualifications
               </h3>
               <div className="space-y-2">
                 {teacherData?.qualification?.map((q, i) => (
                   <div
                     key={i}
-                    className="p-3 bg-gray-50 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center"
+                    className="p-3 bg-secondary-color rounded-lg border border-color-border shadow-sm flex justify-between items-center"
                   >
-                    <span className="font-medium text-gray-800">
+                    <span className="font-medium text-primary-text">
                       {q.degree}
                     </span>
-                    <span className="text-gray-600">{q.university}</span>
+                    <span className="text-primary-text">{q.university}</span>
                   </div>
                 ))}
               </div>
